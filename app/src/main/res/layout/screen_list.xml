@@ -28,10 +28,11 @@
             android:tint="@android:color/white"
             />
 
+        <include layout="@layout/layout_empty"/>
+
     </android.support.design.widget.CoordinatorLayout>
 
     <include layout="@layout/layout_progress"/>
 
-    <include layout="@layout/layout_empty"/>
 
 </FrameLayout>
