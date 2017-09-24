@@ -1,34 +1,26 @@
 package sk.vander.enroll.ui
 
 import android.app.Activity
-import android.arch.lifecycle.ViewModel
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.MediaStore
 import android.support.v4.content.FileProvider
 import io.reactivex.Completable
-import io.reactivex.Observable
-import io.reactivex.disposables.Disposable
-import io.reactivex.subjects.BehaviorSubject
-import io.reactivex.subjects.PublishSubject
+import sk.vander.lib.ui.viewmodel.ActivityResult
+import sk.vander.lib.ui.viewmodel.BaseViewModel
+import sk.vander.lib.ui.viewmodel.ToActivityResult
+import sk.vander.lib.ui.viewmodel.ViewEvent
 import java.io.File
 import javax.inject.Inject
 
 /**
  * @author marian on 24.9.2017.
  */
-class PersonDetailViewModel @Inject constructor() : ViewModel() {
-  val state: BehaviorSubject<DetailState> = BehaviorSubject.createDefault(DetailState())
-  val navigation: PublishSubject<Navigation> = PublishSubject.create()
+class PersonDetailViewModel @Inject constructor() : BaseViewModel<DetailState>() {
   var photoState: PhotoState? = null
 
-  fun bindIntents(intents: List<Observable<out ViewEvent>>): Disposable =
-      Observable.merge(intents)
-          .flatMapCompletable { handleEvent(it) }
-          .subscribe()
-
-  private fun handleEvent(event: ViewEvent): Completable {
+  override fun handleEvent(event: ViewEvent): Completable {
     val newState = when {
       event is EventName -> state.value.copy(name = event.text)
       event is EventSurname -> state.value.copy(surname = event.text)
@@ -48,6 +40,7 @@ class PersonDetailViewModel @Inject constructor() : ViewModel() {
             Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply { putExtra(MediaStore.EXTRA_OUTPUT, event.uri) },
             REQUEST_CODE_CAMERA))
       }
+
       event is ActivityResult && event.result == Activity.RESULT_OK && event.request == REQUEST_CODE_CAMERA ->
         photoState?.let { navigation.onNext(ToActivityResult(cropIntent(it.uri), REQUEST_CODE_CROP)) }
 

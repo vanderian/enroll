@@ -1,27 +1,17 @@
 package sk.vander.enroll.ui
 
-import android.arch.lifecycle.ViewModel
 import io.reactivex.Completable
-import io.reactivex.Observable
-import io.reactivex.disposables.Disposable
-import io.reactivex.subjects.BehaviorSubject
-import io.reactivex.subjects.PublishSubject
+import sk.vander.lib.ui.viewmodel.BaseViewModel
+import sk.vander.lib.ui.viewmodel.ToFragment
+import sk.vander.lib.ui.viewmodel.ViewEvent
 import javax.inject.Inject
 
 /**
  * @author marian on 24.9.2017.
  */
-class PersonListViewModel @Inject constructor() : ViewModel() {
-  val state: BehaviorSubject<ListState> = BehaviorSubject.create()
-  val navigation: PublishSubject<Navigation> = PublishSubject.create()
+class PersonListViewModel @Inject constructor() : BaseViewModel<ListState>() {
 
-  fun bindIntents(intents: List<Observable<out Any>>): Disposable =
-      Observable.merge(intents)
-          .flatMapCompletable { handleState(it) }
-          .subscribe()
-
-
-  private fun handleState(event: Any): Completable {
+  override fun handleEvent(event: ViewEvent): Completable {
     val newState = when (event) {
       else -> state.value
     }

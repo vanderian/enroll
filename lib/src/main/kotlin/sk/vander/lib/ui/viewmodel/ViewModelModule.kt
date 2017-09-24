@@ -14,6 +14,7 @@ import javax.inject.Provider
 @Module(includes = arrayOf(ViewModelModule.MapModule::class))
 object ViewModelModule {
 
+  @Suppress("UNCHECKED_CAST")
   @JvmStatic @Provides @ApplicationScope fun provideViewModelFactory(
       creators: Map<Class<out ViewModel>, @JvmSuppressWildcards Provider<ViewModel>>
   ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
