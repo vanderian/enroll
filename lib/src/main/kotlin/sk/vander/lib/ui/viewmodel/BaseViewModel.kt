@@ -10,14 +10,15 @@ import io.reactivex.subjects.PublishSubject
 /**
  * @author marian on 24.9.2017.
  */
-abstract class BaseViewModel<T>: ViewModel() {
-  val state: BehaviorSubject<T> = BehaviorSubject.create()
+abstract class BaseViewModel<T : ViewState>(default: T) : ViewModel() {
+  val state: BehaviorSubject<T> = BehaviorSubject.createDefault(default)
   val navigation: PublishSubject<Navigation> = PublishSubject.create()
 
   abstract fun handleEvent(event: ViewEvent): Completable
 
   fun bindIntents(intents: List<Observable<out ViewEvent>>): Disposable =
       Observable.merge(intents)
+          .startWith(Init)
           .flatMapCompletable { handleEvent(it) }
           .subscribe()
 }

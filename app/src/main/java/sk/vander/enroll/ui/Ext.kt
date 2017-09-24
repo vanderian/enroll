@@ -1,7 +1,9 @@
 package sk.vander.enroll.ui
 
 import android.net.Uri
+import android.view.View
 import sk.vander.enroll.db.entity.Person
+import sk.vander.enroll.ui.adpater.PersonItem
 import sk.vander.lib.ui.viewmodel.ViewEvent
 import sk.vander.lib.ui.viewmodel.ViewState
 import java.io.File
@@ -14,9 +16,12 @@ import java.io.File
 //list
 object EventFab : ViewEvent
 
-data class EventPerson(val person: Person)
+data class EventPerson(val person: Person) : ViewEvent
 data class ListState(
-    val items: List<String>
+    val items: List<PersonItem> = emptyList(),
+    val loading: Boolean = true,
+    val empty: Boolean = false
+
 ) : ViewState
 
 //detail
@@ -33,5 +38,9 @@ data class DetailState(
     val surname: String = "",
     val date: String = "",
     val photo: Uri? = null,
-    val saveEnabled: Boolean = false
+    val saveEnabled: Boolean = false,
+    val loading: Boolean = false
 ) : ViewState
+
+//misc
+fun Boolean.visibility() = if (this) View.VISIBLE else View.GONE

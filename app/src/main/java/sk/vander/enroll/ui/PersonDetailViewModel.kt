@@ -1,25 +1,40 @@
 package sk.vander.enroll.ui
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.MediaStore
 import android.support.v4.content.FileProvider
+import com.google.android.gms.location.LocationRequest
+import com.patloew.rxlocation.RxLocation
 import io.reactivex.Completable
-import sk.vander.lib.ui.viewmodel.ActivityResult
-import sk.vander.lib.ui.viewmodel.BaseViewModel
-import sk.vander.lib.ui.viewmodel.ToActivityResult
-import sk.vander.lib.ui.viewmodel.ViewEvent
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+import sk.vander.enroll.db.dao.PersonDao
+import sk.vander.enroll.db.entity.Person
+import sk.vander.lib.ui.viewmodel.*
 import java.io.File
+import java.util.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 /**
  * @author marian on 24.9.2017.
  */
-class PersonDetailViewModel @Inject constructor() : BaseViewModel<DetailState>() {
+class PersonDetailViewModel @Inject constructor(
+    private val personDao: PersonDao,
+    private val rxLocation: RxLocation,
+    private val uuid: UUID
+) : BaseViewModel<DetailState>(DetailState()) {
   var photoState: PhotoState? = null
+  private val locationRequest: LocationRequest = LocationRequest.create()
+      .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+      .setNumUpdates(1)
+      .setMaxWaitTime(TimeUnit.SECONDS.toMillis(5))
 
+  @SuppressLint("MissingPermission")
   override fun handleEvent(event: ViewEvent): Completable {
     val newState = when {
       event is EventName -> state.value.copy(name = event.text)
@@ -46,6 +61,16 @@ class PersonDetailViewModel @Inject constructor() : BaseViewModel<DetailState>()
 
       event is ActivityResult && event.result == Activity.RESULT_CANCELED && event.request == REQUEST_CODE_CAMERA ->
         photoState = photoState?.let { it.file.delete(); null }
+
+      event is EventForm -> {
+        state.onNext(state.value.copy(loading = true))
+        return rxLocation.settings().checkAndHandleResolution(locationRequest)
+            .flatMap { rxLocation.location().updates(locationRequest).firstOrError() }
+            .map { Person(event, photoState?.uri, it, uuid) }
+            .flatMapCompletable { Completable.fromAction { personDao.insert(it) }.subscribeOn(Schedulers.io()) }
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnComplete { navigation.onNext(GoBack) }
+      }
     }
     return Completable.complete()
   }

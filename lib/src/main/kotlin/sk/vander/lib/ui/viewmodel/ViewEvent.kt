@@ -8,6 +8,8 @@ import android.content.Intent
  */
 interface ViewEvent
 
+object Init : ViewEvent
+
 data class ActivityResult(
     val request: Int,
     val result: Int = Activity.RESULT_CANCELED,
