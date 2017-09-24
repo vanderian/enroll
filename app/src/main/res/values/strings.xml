@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Enrollment</string>
     <string name="label_list">People</string>
+    <string name="hint_name">First Name</string>
+    <string name="hint_surname">Last Name</string>
+    <string name="hint_date">Date Born</string>
 </resources>
