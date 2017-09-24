@@ -17,24 +17,30 @@ class PersonListFragment : BaseFragment<PersonListViewModel>(PersonListViewModel
 
   override fun layout(): Int = R.layout.screen_list
 
-  private val intents = listOf<Observable<ViewEvent>>(
-      fab.clicks().map { EventFab() }
+  private fun intents() = listOf<Observable<out Any>>(
+      fab.clicks().map { EventFab }
   )
 
-  private fun render(state: ViewState) {
-    when (state) {
-      is ShowFragment -> activity.supportFragmentManager.beginTransaction()
-          .replace(R.id.container_id, state.fragment)
+  private fun render(state: ListState) {
+  }
+
+  private fun navigate(navigation: Navigation) {
+    when (navigation) {
+      is GoBack -> activity.onBackPressed()
+      is ToFragment -> activity.supportFragmentManager.beginTransaction()
+          .replace(R.id.container_id, navigation.fragment)
           .addToBackStack("")
           .commit()
+
     }
   }
 
   override fun onStart() {
     super.onStart()
     disposable.addAll(
-        viewModel.bindIntents(intents),
-        viewModel.state.subscribe { render(it) }
+        viewModel.bindIntents(intents()),
+        viewModel.state.subscribe { render(it) },
+        viewModel.navigation.subscribe { navigate(it) }
     )
   }
 

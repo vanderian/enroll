@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <uses-feature android:name="android.hardware.location.gps"/>
 
@@ -23,12 +24,23 @@
         <activity
             android:name="sk.vander.enroll.MainActivity"
             android:label="@string/app_name"
+            android:windowSoftInputMode="adjustResize|stateHidden"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <provider
+            android:name=".ui.PersonDetailViewModel$PhotoFileProvider"
+            android:authorities="sk.vander.enroll.take_photo"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/photo_picker_paths"/>
+        </provider>
 
     </application>
 </manifest>

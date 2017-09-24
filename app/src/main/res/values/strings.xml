@@ -1,7 +1,12 @@
 <resources>
     <string name="app_name">Enrollment</string>
     <string name="label_list">People</string>
-    <string name="hint_name">First Name</string>
-    <string name="hint_surname">Last Name</string>
+    <string name="hint_name">First Name, required</string>
+    <string name="hint_surname">Last Name, required</string>
     <string name="hint_date">Date Born</string>
+    <string name="label_new_person">New Enrollment</string>
+    <string name="no_app_error">There si no application to take handle $s action.</string>
+    <string name="action_save">Save</string>
+    <string name="select_picture">Select picture</string>
+    <string name="no_gallery_app_error">No Gallery app installed to pick photo.</string>
 </resources>

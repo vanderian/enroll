@@ -12,6 +12,5 @@ import sk.vander.lib.ui.ViewContainer
 object DebugAppModule {
 
   @JvmStatic @Provides fun providesViewContainer(): ViewContainer = ViewContainer.DEFAULT
-  @JvmStatic @Provides fun providesHierarchyServer(): ActivityHierarchyServer = ActivityHierarchyServer.NONE
-
+  @JvmStatic @Provides fun providesHierarchyServer(): ActivityHierarchyServer = ActivityHierarchyServer.Debug()
 }

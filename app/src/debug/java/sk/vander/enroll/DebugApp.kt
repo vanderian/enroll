@@ -2,6 +2,7 @@ package sk.vander.enroll
 
 import android.os.StrictMode
 import autodagger.AutoInjector
+import butterknife.ButterKnife
 import com.facebook.stetho.Stetho
 import com.github.moduth.blockcanary.BlockCanary
 import com.github.moduth.blockcanary.BlockCanaryContext
@@ -28,7 +29,7 @@ class DebugApp : App() {
     Stetho.initializeWithDefaults(this)
 
     setupAppMonitoring()
-//    ButterKnife.setDebug(true)
+    ButterKnife.setDebug(true)
     Picasso.setSingletonInstance(Picasso.Builder(this).loggingEnabled(true).build())
 
     StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder().penaltyLog().penaltyDeath().detectAll().build())

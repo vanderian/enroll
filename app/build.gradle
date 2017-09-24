@@ -11,10 +11,9 @@ apply from: rootProject.file("gradle/android.gradle")
 
 android {
     defaultConfig {
-        applicationId "sk.vander.electride"
+        applicationId "sk.vander.enroll"
         versionCode 1
         versionName "1.0"
-        buildConfigField("String", "MAPBOX_TOKEN", "\"${rootProject.ext.props.mapbox}\"")
     }
 
     buildTypes {
