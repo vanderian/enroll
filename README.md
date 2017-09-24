@@ -1,2 +1,2 @@
-# electride
-An electric car driver tool
+# enrollment
+A showcase application
