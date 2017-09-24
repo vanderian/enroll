@@ -18,7 +18,7 @@ class PersonListViewModel @Inject constructor(
 ) : BaseViewModel<ListState>(ListState()) {
 
   override fun handleEvent(event: ViewEvent): Completable {
-    val newState = when (event) {
+    when (event) {
       is Init -> return personDao.queryAll()
           .map { it.map { PersonItem(it) } }
           .map { ListState(it, false, it.isEmpty()) }
@@ -26,12 +26,10 @@ class PersonListViewModel @Inject constructor(
           .doOnNext { state.onNext(it) }
           .ignoreElements()
 
-      else -> state.value
-    }
-    if (state.value != newState) state.onNext(newState)
+      is EventFab -> navigation.onNext(ToFragment(PersonCreateFragment()))
+      is EventPerson -> navigation.onNext(ToFragment(PersonDetailFragment.newInstance(event.person.id)))
 
-    when (event) {
-      is EventFab -> navigation.onNext(ToFragment(PersonDetailFragment()))
+      else -> Completable.complete()
     }
 
     return Completable.complete()

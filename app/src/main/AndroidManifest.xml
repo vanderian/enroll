@@ -32,7 +32,7 @@
         </activity>
 
         <provider
-            android:name=".ui.PersonDetailViewModel$PhotoFileProvider"
+            android:name=".ui.PersonCreateViewModel$PhotoFileProvider"
             android:authorities="sk.vander.enroll.take_photo"
             android:exported="false"
             android:grantUriPermissions="true">

@@ -24,7 +24,7 @@ data class ListState(
 
 ) : ViewState
 
-//detail
+//create
 data class EventHasText(val has: Boolean) : ViewEvent
 
 data class EventForm(val name: String, val surname: String, val date: String) : ViewEvent
@@ -33,7 +33,7 @@ data class EventSurname(val text: String) : ViewEvent
 data class EventDate(val text: String) : ViewEvent
 data class EventFiles(val file: File, val uri: Uri) : ViewEvent
 
-data class DetailState(
+data class CreateState(
     val name: String = "",
     val surname: String = "",
     val date: String = "",
@@ -41,6 +41,14 @@ data class DetailState(
     val saveEnabled: Boolean = false,
     val loading: Boolean = false
 ) : ViewState
+
+//detail
+data class EventId(val id: Long): ViewEvent
+object EventDelete: ViewEvent
+
+data class DetailState(
+    val person: Person? = null
+): ViewState
 
 //misc
 fun Boolean.visibility() = if (this) View.VISIBLE else View.GONE

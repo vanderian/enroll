@@ -5,6 +5,7 @@ import android.arch.persistence.room.Delete
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.Query
 import io.reactivex.Flowable
+import io.reactivex.Single
 import sk.vander.enroll.db.entity.Person
 
 /**
@@ -21,4 +22,7 @@ interface PersonDao {
 
   @Query("SELECT * FROM people")
   fun queryAll(): Flowable<List<Person>>
+
+  @Query("SELECT * FROM people WHERE id = :id")
+  fun queryOne(id: Long): Single<Person>
 }

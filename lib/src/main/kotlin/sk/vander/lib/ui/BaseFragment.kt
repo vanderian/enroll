@@ -68,9 +68,9 @@ abstract class BaseFragment<T : BaseViewModel<S>, S: ViewState>(private val claz
   override fun onStart() {
     super.onStart()
     disposable.addAll(
-        viewModel.bindIntents(intents().plus(activityResult)),
         viewModel.state.subscribe { render(it) },
-        viewModel.navigation.subscribe { navigate(it) }
+        viewModel.navigation.subscribe { navigate(it) },
+        viewModel.bindIntents(intents().plus(activityResult))
     )
   }
 

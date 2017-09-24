@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     >
 
     <android.support.design.widget.CoordinatorLayout
@@ -13,7 +14,7 @@
 
         <include layout="@layout/layout_app_bar_person"/>
 
-        <android.support.constraint.ConstraintLayout
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="16dp"
@@ -22,66 +23,22 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             >
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/input_name"
+            <TextView
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:id="@+id/text_info"
+                tools:text="A whole person shown here as a toString()"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="@+id/input_surname"
-                app:layout_constraintTop_toTopOf="parent"
-                >
+                />
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/input_edit_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/hint_name"
-                    android:inputType="textPersonName"
-                    />
-
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/input_surname"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/input_name"
-                >
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/input_edit_surname"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/hint_surname"
-                    android:inputType="textPersonName"
-                    />
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/input_date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/input_surname"
-                >
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/input_edit_date"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/hint_date"
-                    android:inputType="date"
-                    />
-            </android.support.design.widget.TextInputLayout>
-
-        </android.support.constraint.ConstraintLayout>
+        </android.support.v4.widget.NestedScrollView>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/toolbar_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/fab_margin"
-            android:src="@drawable/ic_photo_camera_black_24dp"
+            android:src="@drawable/ic_delete_black_24dp"
             android:tint="@android:color/white"
             app:layout_anchor="@+id/app_bar_layout"
             app:layout_anchorGravity="bottom|right|end"

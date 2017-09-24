@@ -21,7 +21,7 @@ import sk.vander.lib.ui.widget.adapter.RecyclerAdapter
  */
 class PersonListFragment : BaseFragment<PersonListViewModel, ListState>(PersonListViewModel::class) {
   private val source = ListSource<PersonItem>()
-  private val adapter = RecyclerAdapter(source, { _, root -> PersonViewHolder(root)})
+  private val adapter = RecyclerAdapter(source, { _, root -> PersonViewHolder(root)}).apply { setHasStableIds(true) }
   @BindView(R.id.recycler_people) lateinit var recycler: RecyclerView
   @BindView(R.id.fab_enroll) lateinit var fab: FloatingActionButton
   @BindView(R.id.view_progress) lateinit var progress: View
@@ -31,7 +31,6 @@ class PersonListFragment : BaseFragment<PersonListViewModel, ListState>(PersonLi
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
-    adapter.setHasStableIds(true)
     recycler.layoutManager = LinearLayoutManager(context)
     recycler.adapter = adapter
   }

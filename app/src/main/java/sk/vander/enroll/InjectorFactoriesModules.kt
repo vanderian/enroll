@@ -2,6 +2,7 @@ package sk.vander.enroll
 
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
+import sk.vander.enroll.ui.PersonCreateFragment
 import sk.vander.enroll.ui.PersonDetailFragment
 import sk.vander.enroll.ui.PersonListFragment
 import sk.vander.lib.annotations.ActivityScope
@@ -16,10 +17,13 @@ object InjectorFactoriesModules {
   @Module
   abstract class Fragments {
     @FragmentScope @ContributesAndroidInjector()
-    abstract fun contributePersonDetailFragment(): PersonDetailFragment
+    abstract fun contributePersonCreateFragment(): PersonCreateFragment
 
     @FragmentScope @ContributesAndroidInjector()
     abstract fun contributePersonListFragement(): PersonListFragment
+
+    @FragmentScope @ContributesAndroidInjector()
+    abstract fun contributePersonDetalFragement(): PersonDetailFragment
   }
 
   @Module

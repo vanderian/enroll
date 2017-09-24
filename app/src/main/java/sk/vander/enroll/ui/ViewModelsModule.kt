@@ -15,6 +15,9 @@ abstract class ViewModelsModule {
   @Binds @IntoMap @ViewModelKey(PersonListViewModel::class)
   abstract fun providePersonListViewModel(viewModel: PersonListViewModel): ViewModel
 
+  @Binds @IntoMap @ViewModelKey(PersonCreateViewModel::class)
+  abstract fun providePersonCreateViewModel(viewModel: PersonCreateViewModel): ViewModel
+
   @Binds @IntoMap @ViewModelKey(PersonDetailViewModel::class)
   abstract fun providePersonDetailViewModel(viewModel: PersonDetailViewModel): ViewModel
 
