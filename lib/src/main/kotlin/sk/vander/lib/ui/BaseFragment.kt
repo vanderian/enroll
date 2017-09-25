@@ -24,7 +24,9 @@ import kotlin.reflect.KClass
 /**
  * @author marian on 20.9.2017.
  */
-abstract class BaseFragment<T : BaseViewModel<S>, S: ViewState>(private val clazz: KClass<T>) : Fragment(), Injectable {
+abstract class BaseFragment<T : BaseViewModel<U, V>, U : ViewState, V: ViewIntents>(
+    private val clazz: KClass<T>
+) : Fragment(), Injectable {
   private val activityResult = BehaviorSubject.create<ActivityResult>()
   private lateinit var unbinder: Unbinder
   protected val disposable = CompositeDisposable()
@@ -32,8 +34,8 @@ abstract class BaseFragment<T : BaseViewModel<S>, S: ViewState>(private val claz
   lateinit var viewModel: T
 
   @LayoutRes abstract fun layout(): Int
-  abstract fun intents(): List<Observable<out ViewEvent>>
-  abstract fun render(state: S)
+  abstract fun viewIntents(): V
+  abstract fun render(state: U)
 
   private fun navigate(navigation: Navigation) {
     when (navigation) {
@@ -70,7 +72,7 @@ abstract class BaseFragment<T : BaseViewModel<S>, S: ViewState>(private val claz
     disposable.addAll(
         viewModel.state.subscribe { render(it) },
         viewModel.navigation.subscribe { navigate(it) },
-        viewModel.bindIntents(intents().plus(activityResult))
+        viewModel.collectIntents(viewIntents(), activityResult)
     )
   }
 

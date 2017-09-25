@@ -4,7 +4,7 @@ import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 import android.location.Location
 import android.net.Uri
-import sk.vander.enroll.ui.EventForm
+import sk.vander.enroll.ui.CreateState
 import java.util.*
 
 /**
@@ -22,6 +22,7 @@ data class Person(
     val longitude: Double,
     val deviceId: String
 ) {
-  constructor(event: EventForm, photo: Uri?, loc: Location, uuid: UUID) :
-      this(0, event.name, event.surname, event.date, photo, System.currentTimeMillis(), loc.latitude, loc.longitude, uuid.toString())
+  constructor(state: CreateState, loc: Location, uuid: UUID) :
+      this(0, state.name, state.surname, state.date, state.photo, System.currentTimeMillis(),
+          loc.latitude, loc.longitude, uuid.toString())
 }

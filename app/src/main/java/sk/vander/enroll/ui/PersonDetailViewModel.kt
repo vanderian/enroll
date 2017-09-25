@@ -1,12 +1,15 @@
 package sk.vander.enroll.ui
 
 import io.reactivex.Completable
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import sk.vander.enroll.db.dao.PersonDao
+import sk.vander.lib.ui.viewmodel.ActivityResult
 import sk.vander.lib.ui.viewmodel.BaseViewModel
+import sk.vander.lib.ui.viewmodel.EventFab
 import sk.vander.lib.ui.viewmodel.GoBack
-import sk.vander.lib.ui.viewmodel.ViewEvent
 import javax.inject.Inject
 
 /**
@@ -14,18 +17,23 @@ import javax.inject.Inject
  */
 class PersonDetailViewModel @Inject constructor(
     private val personDao: PersonDao
-) : BaseViewModel<DetailState>(DetailState()) {
+) : BaseViewModel<DetailState, DetailIntents>(DetailState()) {
 
-  override fun handleEvent(event: ViewEvent): Completable {
+  override fun collectIntents(intents: DetailIntents, activityResult: Observable<ActivityResult>): Disposable =
+      Observable.merge(intents.args(), intents.delete())
+          .flatMapCompletable { handleEvent(it) }
+          .subscribe()
+
+  fun handleEvent(event: Any): Completable {
     return when (event) {
-      is EventId -> personDao.queryOne(event.id)
+      is Long -> personDao.queryOne(event)
           .subscribeOn(Schedulers.io())
           .map { DetailState(it) }
           .observeOn(AndroidSchedulers.mainThread())
           .doOnSuccess { state.onNext(it) }
           .toCompletable()
 
-      is EventDelete -> Completable.fromAction { personDao.delete(state.value.person!!) }
+      is EventFab -> Completable.fromAction { personDao.delete(state.value.person!!) }
           .subscribeOn(Schedulers.io())
           .observeOn(AndroidSchedulers.mainThread())
           .doOnComplete { navigation.onNext(GoBack) }

@@ -12,12 +12,12 @@ import com.squareup.picasso.Picasso
 import io.reactivex.Observable
 import sk.vander.enroll.R
 import sk.vander.lib.ui.BaseFragment
-import sk.vander.lib.ui.viewmodel.ViewEvent
+import sk.vander.lib.ui.viewmodel.EventFab
 
 /**
  * @author marian on 25.9.2017.
  */
-class PersonDetailFragment : BaseFragment<PersonDetailViewModel, DetailState>(PersonDetailViewModel::class) {
+class PersonDetailFragment : BaseFragment<PersonDetailViewModel, DetailState, DetailIntents>(PersonDetailViewModel::class) {
   @BindView(R.id.collapsing_toolbar) lateinit var collapsingToolbar: CollapsingToolbarLayout
   @BindView(R.id.toolbar_image_person) lateinit var image: ImageView
   @BindView(R.id.toolbar_fab) lateinit var fab: FloatingActionButton
@@ -26,10 +26,10 @@ class PersonDetailFragment : BaseFragment<PersonDetailViewModel, DetailState>(Pe
 
   override fun layout(): Int = R.layout.screen_detail
 
-  override fun intents(): List<Observable<out ViewEvent>> = listOf(
-      fab.clicks().map { EventDelete },
-      Observable.just(EventId(arguments.getLong(ARG_ID)))
-  )
+  override fun viewIntents(): DetailIntents = object : DetailIntents {
+    override fun delete(): Observable<EventFab> = fab.clicks().map { EventFab }
+    override fun args(): Observable<Long> = Observable.just(arguments.getLong(ARG_ID))
+  }
 
   override fun render(state: DetailState) {
     val hasData = (state.person != null)
