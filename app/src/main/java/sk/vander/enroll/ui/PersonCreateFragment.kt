@@ -23,7 +23,6 @@ import io.reactivex.Maybe
 import io.reactivex.Observable
 import sk.vander.enroll.R
 import sk.vander.lib.ui.BaseFragment
-import sk.vander.lib.ui.viewmodel.EventFab
 import java.io.File
 import java.util.*
 
@@ -54,6 +53,7 @@ class PersonCreateFragment : BaseFragment<PersonCreateViewModel, CreateState, Cr
   @BindView(R.id.input_edit_surname) lateinit var editSurname: TextInputEditText
   @BindView(R.id.input_edit_date) lateinit var editDate: TextInputEditText
   @BindView(R.id.view_progress) lateinit var progress: View
+
   override fun layout(): Int = R.layout.screen_create
 
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

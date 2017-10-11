@@ -27,7 +27,9 @@ class PersonListFragment : BaseFragment<PersonListViewModel, ListState, ListInte
   @BindView(R.id.fab_enroll) lateinit var fab: FloatingActionButton
   @BindView(R.id.view_progress) lateinit var progress: View
   @BindView(R.id.view_empty) lateinit var empty: View
+
   override fun layout(): Int = R.layout.screen_list
+
   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
     super.onViewCreated(view, savedInstanceState)
     recycler.layoutManager = LinearLayoutManager(context)

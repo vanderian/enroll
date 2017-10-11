@@ -51,11 +51,11 @@ class PersonCreateViewModel @Inject constructor(
         surname.map { state.value.copy(surname = it.text) },
         intents.date().map { state.value.copy(date = it.text) },
         name.map { it.text.isNullOrEmpty() }
-            .zipWith(surname.map { it.text.isNullOrEmpty() }, { n: Boolean, s: Boolean -> !n && !s })
+            .zipWith(surname.map { it.text.isNullOrEmpty() }, { n, s -> !n && !s })
             .map { state.value.copy(saveEnabled = it) },
         activityResult
             .filter { it.request == REQUEST_CODE_CROP }
-            .map { photoState?.let { state.value.copy(photo = it.uri) } ?: state.value }
+            .map { photoState!!.let { state.value.copy(photo = it.uri) } }
     )).doOnNext { if (state.value != it) state.onNext(it) }
 
     val navi = Observable.merge(
